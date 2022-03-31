@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!--Bring in the model-->
+@model List<Bowler>
+
+
+<h1>Bowler Contact Information</h1>
+<!--Show Team Name if filtered-->
+@if (ViewBag.Selected == true)
+{
+    <h1>@ViewBag.FilteredTeam.TeamName</h1>
+}
+
+<!--Ability to filter by team name-->
+<form method="get" asp-controller="Home" asp-action="Filter">
+    <label>Filter by Team:</label>
+    <select class="dropdown" id="filter">
+        <option value="0">None</option>
+        @foreach (Team t in ViewBag.Teams)
+        {
+            //Highligh the chosen team if filtered
+            <option class="@(ViewBag.Selected == true ? (ViewBag.FilteredTeam == t ? "bg-primary" : "bg-light") : "bg-light")" value="@t.TeamID">@t.TeamName</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-light btn-sm">Filter</button>
+</form>
+
+<!--Dynamic table for bowler info-->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <td>Bowler ID</td>
+            <td>Last Name</td>
+            <td>First Name</td>
+            <td>Middile Initial</td>
+            <td>Address</td>
+            <td>City</td>
+            <td>State</td>
+            <td>Zip Code</td>
+            <td>Phone Number</td>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Create a table row for each bowler-->
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.BowlerLastName</td>
+                <td>@b.BowlerFirstName</td>
+                <td>@b.BowlerMiddleInit</td>
+                <td>@b.BowlerAddress</td>
+                <td>@b.BowlerCity</td>
+                <td>@b.BowlerState</td>
+                <td>@b.BowlerZip</td>
+                <td>@b.BowlerPhoneNumber</td>
+                <td>@b.Team.TeamName</td>
+
+                <!--Edit and delete buttons-->
+                <td>
+                    <a class="btn btn-info btn-sm" asp-controller="Home" asp-action="Edit" asp-route-bowlerid="@b.BowlerID">Edit</a>
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="Delete" asp-route-bowlerid="@b.BowlerID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<!--Create button-->
+<a class="btn btn-info" asp-controller="Home" asp-action="Create">Add New Bowler</a>
