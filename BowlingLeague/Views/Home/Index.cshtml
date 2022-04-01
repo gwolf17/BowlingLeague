@@ -5,10 +5,8 @@
 <!--Bring in the model-->
 @model List<Bowler>
 
-
-<h1>Bowler Contact Information</h1>
-<!--Show Team Name if filtered-->
-
+<!--Beginning of a dynamic title-->
+<h1>@(ViewBag.Title != null ? ViewBag.Title : "Bowler") Contact Information</h1>
 
 <div class="row m-1 p-1">
     <!--Ability to filter by team name-->

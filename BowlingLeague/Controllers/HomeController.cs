@@ -34,6 +34,17 @@ namespace BowlingLeague.Controllers
                 .Include(x => x.Team)
                 .ToList();
 
+            //Create a variable to hold the Team Name chosen for filtering
+            if (filter != null)
+            {
+                ViewBag.Title = _repo.Bowlers
+                    .Single(b => b.Team.TeamName == filter);
+            }
+            else
+            {
+                ViewBag.Title = null;
+            }
+
             //Include a list of the Team objects
             ViewBag.Teams = _context.Teams.ToList();
 
