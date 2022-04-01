@@ -25,44 +25,19 @@ namespace BowlingLeague.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string filter)
         {
             //Put the data into a list to send to the view
+            //Filter functionality implimented here
             var data = _repo.Bowlers
+                .Where(b => b.Team.TeamName == filter || filter == null)  //Filter by team name or select all teams if no filer is chosen
                 .Include(x => x.Team)
                 .ToList();
 
             //Include a list of the Team objects
             ViewBag.Teams = _context.Teams.ToList();
-            ViewBag.Selected = false;  //Not filtered
-            ViewBag.FilteredTeam = _repo.Bowlers;
 
             return View(data);
-        }
-
-        //Filter functionality
-        public IActionResult Filter(int Id)
-        {
-            if (Id != 0)
-            {
-                //Only return Bowlers on the chosen team
-                var filtered = _repo.Bowlers
-                    .Include(x => x.Team)
-                    .Where(x => x.TeamID == Id)
-                    .ToList();
-
-                ViewBag.Teams = _context.Teams.ToList();
-                ViewBag.Selected = true;  //Filtered
-
-                ViewBag.FilteredTeam = _repo.Bowlers
-                    .Single(x => x.TeamID == Id);
-
-                return View("Index", filtered);
-            }
-            else
-            {
-                return Redirect("Index");
-            }
         }
 
         //Delete functionality

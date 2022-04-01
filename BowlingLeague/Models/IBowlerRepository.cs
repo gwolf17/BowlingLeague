@@ -7,8 +7,10 @@ namespace BowlingLeague.Models
 {
     public interface IBowlerRepository
     {
-        //Get the data from the model
+        //Get the data from the Bowlers model
         IQueryable<Bowler> Bowlers { get; }
+        //Get data from the Teams model
+        IQueryable<Team> Teams { get; }
 
         //CRUD functionality
         public void SaveBowler(Bowler b);
